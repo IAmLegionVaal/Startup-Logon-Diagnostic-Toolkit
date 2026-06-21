@@ -1,33 +1,43 @@
 # Startup Logon Diagnostic Toolkit
 
-A read-only PowerShell toolkit for Windows startup and sign-in triage.
+A PowerShell toolkit for Windows startup and sign-in triage and selected guarded repairs.
 
-## Features
-
-- Startup item inventory
-- Running shell and user context
-- Recent logon-related event summary
-- Uptime and boot context
-- CSV, JSON, and HTML reports
-
-## How to run
+## Diagnostic script
 
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -File .\Startup_Logon_Diagnostic_Toolkit.ps1
 ```
 
+## Repair script
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\Startup_Logon_Repair_Toolkit.ps1 -RestartExplorer -DryRun
+```
+
+Examples:
+
+```powershell
+.\Startup_Logon_Repair_Toolkit.ps1 -RestartExplorer
+.\Startup_Logon_Repair_Toolkit.ps1 -ClearIconCache
+.\Startup_Logon_Repair_Toolkit.ps1 -RepairWinlogonDefaults
+.\Startup_Logon_Repair_Toolkit.ps1 -DisableScheduledTask 'Example Startup Task'
+.\Startup_Logon_Repair_Toolkit.ps1 -RunSfc
+```
+
+## What the repair does
+
+- Restarts Windows Explorer.
+- Rebuilds the current user’s Explorer icon cache.
+- Backs up and restores the standard Winlogon `Shell` and `Userinit` values.
+- Disables one explicitly selected scheduled task.
+- Runs System File Checker when selected.
+- Captures startup, task and Winlogon state before and after repair.
+- Supports `-DryRun`, confirmation prompts, logs and clear exit codes.
+
 ## Safety
 
-Diagnostic-only. It reports startup and logon context for support review.
+Incorrect Winlogon or scheduled-task changes can affect sign-in and startup. Registry backup is created before Winlogon repair. The tool does not delete startup commands, user profiles or credentials automatically.
 
-## Suggested topics
+## Author
 
-```text
-powershell
-windows
-startup
-logon
-helpdesk
-it-support
-troubleshooting
-```
+Dewald Pretorius — L2 IT Support Engineer
